@@ -1,28 +1,30 @@
 import './App.css';
-import {useState, useEffect} from "react"
+import {useState,useEffect} from "react"
 import Axios from "axios"
 function App() {
   
   //thằng dependencies không phải là một giá trị mà nó là một cái biến, useEffect sẽ được gọi lại khi các biến dependencies thay đổi
-  const [name,setName] = useState("")
-  const [age,setAge] = useState(0)
-  const fetchData = () => {
-    Axios.get(`https://api.agify.io/?name=${name}`).then((res) => {
-      setAge(res.data.age)
+  const [excuse,setExcuse] = useState(null)
+  const fetchData = (role) => {
+    Axios.get(`https://excuser-three.vercel.app/v1/excuse/${role}/`).then((res) => {
+      setExcuse(res.data[0])
+      console.log(res.data[0].category)
     })
   }
+  //onclick event trong này phải gọi hàm trống rồi truyền hàm khác vào
   return <div className = "App">
     <div>
-      <input type="text" placeholder='Enter name' onChange={(event) => {
-          setName(event.target.value)
-      }}></input>
-    </div>
-    <div>
-      <button onClick={fetchData}>
-        Predict Age
+      <button onClick={() => fetchData("family")}>
+        Family
+      </button>
+      <button onClick={() => fetchData("office")}>
+        Office
+      </button>
+      <button onClick={() => fetchData("children")}>
+        Children
       </button>
     </div>
-    <h1>{age? age:"No data"}</h1>
+    <h1>{excuse? excuse.excuse:"No data"}</h1>
   </div>
 }
 export default App;
