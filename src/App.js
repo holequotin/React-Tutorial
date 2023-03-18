@@ -1,30 +1,23 @@
 import './App.css';
-import {useState,useEffect} from "react"
-import Axios from "axios"
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Home } from './components/Home';
+import { Contact } from './components/Contact';
+import { About } from './components/About';
+import { Navbar } from './components/Navbar';
 function App() {
   
   //thằng dependencies không phải là một giá trị mà nó là một cái biến, useEffect sẽ được gọi lại khi các biến dependencies thay đổi
-  const [excuse,setExcuse] = useState(null)
-  const fetchData = (role) => {
-    Axios.get(`https://excuser-three.vercel.app/v1/excuse/${role}/`).then((res) => {
-      setExcuse(res.data[0])
-      console.log(res.data[0].category)
-    })
-  }
   //onclick event trong này phải gọi hàm trống rồi truyền hàm khác vào
   return <div className = "App">
-    <div>
-      <button onClick={() => fetchData("family")}>
-        Family
-      </button>
-      <button onClick={() => fetchData("office")}>
-        Office
-      </button>
-      <button onClick={() => fetchData("children")}>
-        Children
-      </button>
-    </div>
-    <h1>{excuse? excuse.excuse:"No data"}</h1>
+    <Router>
+      <Navbar></Navbar>
+      <Routes>
+        {/*Sử dụng component bên trong thằng element*/}
+        <Route path="/" element = {<Home/>}></Route>
+        <Route path="/contact" element = {<Contact/>}></Route>
+        <Route path="/about" element = {<About/>}></Route>
+      </Routes>
+    </Router>
   </div>
 }
 export default App;
